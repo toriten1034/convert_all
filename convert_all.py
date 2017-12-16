@@ -32,14 +32,20 @@ for file in files:
         #print(dict[file],"!=", hash_v)
         if(dict[file] != hash_v):
             print("reconvert:"+file)
-            cmd = "convert figs_raw/"+file+" -resize 480x320 "+"figs/"+name+".pdf"
+            if(ext == ".svg"):
+                cmd = "rsvg-convert -f pdf -0"+"figs/"+name+".pdf"+ " figs_raw/"+file
+            else:
+                cmd = "convert figs_raw/"+file+" -resize 480x320 "+"figs/"+name+".pdf"
             print(cmd)
             subprocess.call( cmd, shell=True  )
             dict[file] = hash_v
     else:
         print("add:"+file)
         dict[file] = hash_v
-        cmd = "convert figs_raw/"+file+" -resize 480x320 "+"figs/"+name+".pdf"
+        if(ext == ".svg"):
+            cmd = "inkscape -f figs_raw/"+file+" -A "+"figs/"+name+".pdf"
+        else:
+            cmd = "convert figs_raw/"+file+" -resize 480x320 "+"figs/"+name+".pdf"
         print(cmd)
         subprocess.call( cmd , shell=True  )   
 
